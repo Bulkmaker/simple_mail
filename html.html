@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Form</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	 crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	 crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	 crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	 crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<h1>Форма связи </h1>
+	<form class='ajaxForm' id="formid" data-metrika="target">
+		<?php $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
+		<input type="hidden" name="form_subject" value="Форма связи на главной">
+		<input type="hidden" name="Отправлено со страницы" value="<?php echo $actual_link ?>">
+		<div class="alert alert-success formSubmitSuccess" role="alert" style="display: none">
+			Ваш запрос отправлен.
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control" name="Имя" placeholder="Ваше имя (обязательно)" required>
+		</div>
+		<div class="form-group">
+			<input type="email" class="form-control" name="Почта" placeholder="E-mail (обязательно)" required>
+		</div>
+		<div class="form-group">
+			<input type="tel" class="form-control" name="Телефон" placeholder="Телефон (обязательно)" required>
+		</div>
+		<div class="form-group">
+			<textarea class="form-control" name="Вопрос" rows="3" placeholder="Ваш вопрос"></textarea>
+		</div>
+		<input type="hidden" name="Загруженный файл" id="form_file_path" value="">
+		<input type="hidden" name="Выбранные опции" id="output_text_result">
+		<div class="form-group mb-2">
+			<label for="exampleFormControlTextarea1">Загрузить файл</label><br>
+			<a href="#" id="uploadBtnClick" class="btn btn-info">Загрузить файл</a>
+			<div id="uploadProgressWrapper" style="display: none">
+				<div class="progress">
+					<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+				</div>
+			</div>
+			<div class="alert alert-success" id="fileUploadSuccess" style="display: none" role="alert">
+				Файл успешно загружен.
+			</div>
+			<div class="alert alert-danger" id="fileUploadError" style="display: none" role="alert">
+
+			</div>
+		</div>
+		<div class="custom-control custom-checkbox mb-3">
+			<input type="checkbox" class="custom-control-input" id="conf" required>
+			<label class="custom-control-label" for="conf">Я согласен с <a href=/politika>Политикой конфиденциальности</a> </label>
+				 </div> <button type="submit" class="btn btn-danger">Отправить</button>
+	</form>
+</body>
+<footer>
+	<script src="/supl/simpleUpload.js"></script>
+	<script src="/supl/upload.js"></script>
+	<input type="file" id="fileupload" name="upload" multiple accept="image/jpeg,image/png,image/gif,image/webp,application/pdf"
+	 style="display: none">
+	<script>
+		$(document).ready(function () {
+			$("form.ajaxForm").submit(function (e) { //Change
+				e.preventDefault();
+				var th = $(this);
+				let metrika_target = th.data('metrika');
+				$.ajax({
+					type: "POST",
+					url: "/supl/mail.php", //Change
+					data: th.serialize()
+				}).done(function (returnData) {
+					if (returnData == '200') {
+						$(".formSubmitSuccess").html("Ваше сообщение успешно отправлено.").show();
+						ym(52242352, 'reachGoal', metrika_target);
+					} else {
+						$(".formSubmitSuccess").removeClass("alert-success").addClass("alert-danger").html(
+							"Произошла ошибка при отправке сообщения.").show();
+					}
+					$(".fileUploadSuccess").hide();
+					$(".fileUploadError").hide();
+					//alert("Thank you!");
+					setTimeout(function () {
+						// Done Functions
+						th.trigger("reset");
+					}, 1000);
+				});
+				return false;
+			});
+		});
+	</script>
+</footer>
+
+</html>
