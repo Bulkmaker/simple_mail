@@ -1,6 +1,6 @@
 <?php
-$project_name = "Brusmir.ru";
-$admin_email  = "test@brusmir.ru";
+$project_name = "Project name";
+$admin_email  = "Admin@mail.ru";
 $form_subject = trim($_POST["form_subject"]);
 
 foreach ( $_POST as $key => $value ) {
