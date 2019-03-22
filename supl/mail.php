@@ -2,7 +2,7 @@
 $project_name = "Project name";
 $admin_email  = "Admin@mail.ru";
 $form_subject = trim($_POST["form_subject"]);
-$my_mail = "noreply@kostromaplotnik1.ru";
+$my_mail = "noreply@".$_SERVER['HTTP_HOST'];
 
 foreach ( $_POST as $key => $value ) {
     if ( $value != "" && $key != "form_subject" ) {
