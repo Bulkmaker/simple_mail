@@ -2,6 +2,7 @@
 $project_name = "Project name";
 $admin_email  = "Admin@mail.ru";
 $form_subject = trim($_POST["form_subject"]);
+$my_mail = "noreply@kostromaplotnik1.ru";
 
 foreach ( $_POST as $key => $value ) {
     if ( $value != "" && $key != "form_subject" ) {
@@ -26,13 +27,14 @@ $message = "<table style='width: 100%;'>$message</table>";
 
 $headers = "MIME-Version: 1.0" . PHP_EOL .
     "Content-Type: text/html; charset=utf-8" . PHP_EOL .
-    'From: '.adopt($project_name).' <'.$admin_email.'>' . PHP_EOL .
-    'Reply-To: '.$admin_email.'' . PHP_EOL;
-if (mail($admin_email, adopt($form_subject), $message, $headers )) {
+    'From: '.adopt($project_name).'  <'.$my_mail.'>' . PHP_EOL .
+    'Reply-To: '.$my_mail.'' . PHP_EOL;
+if (mail($admin_email, adopt($form_subject), $message, $headers)) {
     echo '200';
 } else {
     echo '500';
 }
+
 
 
 function adopt($text) {
