@@ -75,14 +75,14 @@
 					data: th.serialize()
 				}).done(function (returnData) {
 					if (returnData == '200') {
-						$(".formSubmitSuccess").html("Ваше сообщение успешно отправлено.").show();
+                        th.find(".formSubmitSuccess").html("Ваше сообщение успешно отправлено.").show();
 						ym(52242352, 'reachGoal', metrika_target);
 					} else {
 						$(".formSubmitSuccess").removeClass("alert-success").addClass("alert-danger").html(
 							"Произошла ошибка при отправке сообщения.").show();
 					}
-					$(".fileUploadSuccess").hide();
-					$(".fileUploadError").hide();
+                    th.find(".fileUploadSuccess").hide();
+                    th.find(".fileUploadError").hide();
 					//alert("Thank you!");
 					setTimeout(function () {
 						// Done Functions
